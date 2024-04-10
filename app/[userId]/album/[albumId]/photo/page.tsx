@@ -20,12 +20,10 @@ const Photo = ({ params }: PhotoProps) => {
     const data = await getPhotosForId(params.albumId || "");
     if (!data.error) {
       setPhoto(data.result);
-      setLoading(false);
-    } else {
-      setPhoto([]);
-      setLoading(false);
     }
+      setLoading(false);
   };
+  
 
   const breadcrumb = [
     { label: "Home", link: "/" },

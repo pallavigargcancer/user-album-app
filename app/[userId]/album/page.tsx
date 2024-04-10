@@ -21,11 +21,8 @@ const Album = ({ params }: AlbumProps) => {
     const data = await getAlbumsForId(params.userId || "");
     if (!data.error) {
       setAlbums(data.result);
-      setLoading(false);
-    } else {
-      setAlbums([]);
-      setLoading(false);
     }
+      setLoading(false);
   };
 
 

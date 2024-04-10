@@ -20,11 +20,8 @@ const User = () => {
     const data = await getUsers();
     if (!data.error) {
       setUsers(data.result);
-      setLoading(false);
-    } else {
-      setUsers([]);
-      setLoading(false);
     }
+      setLoading(false);
   };
 
   const breadcrumb = [{ label: "Home", link: "/" }];
