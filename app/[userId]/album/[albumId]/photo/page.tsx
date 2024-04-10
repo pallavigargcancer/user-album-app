@@ -1,29 +1,33 @@
 "use client";
+import React, { useEffect, useState } from "react";
 import Breadcrumb from "@/common/components/breadcrumb";
 import NoDataFound from "@/common/components/nodatafound";
-import React, { useEffect, useState } from "react";
+import PhotoCard from "@/common/components/photocard";
+import Loader from "@/common/components/loader";
 import { PhotoProps } from "./photoProps.type";
 import { PhotoRes } from "@/common/services/api.type";
 import { getPhotosForId } from "@/common/services/api";
-import PhotoCard from "@/common/components/photocard";
-import Loader from "@/common/components/loader";
 
 const Photo = ({ params }: PhotoProps) => {
-  const [photos, setPhoto] = useState<PhotoRes[]>([]);
+  const [photos, setPhotos] = useState<PhotoRes[]>([]);
   const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     fetchPhotos();
   }, [params]);
 
   const fetchPhotos = async () => {
     setLoading(true);
-    const data = await getPhotosForId(params.albumId || "");
-    if (!data.error) {
-      setPhoto(data.result);
+    try {
+      const data = await getPhotosForId(params.albumId || "");
+      if (!data.error) {
+        setPhotos(data.result);
+      }
+    } catch (error) {
+      console.error("Error fetching photos:", error);
     }
-      setLoading(false);
+    setLoading(false);
   };
-  
 
   const breadcrumb = [
     { label: "Home", link: "/" },
@@ -37,16 +41,21 @@ const Photo = ({ params }: PhotoProps) => {
       <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight dark:text-slate-200">
         Photos
       </h2>
-      {loading ? <Loader /> :
-      <div className="flex w-full justify-center">
-        {photos.length > 0 ? (
-          <div className="grid w-full h-full  gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5  justify-center">
-            {photos.map((item, index) => (
-              <PhotoCard text={item.title} key={index} image={item.url} />
-            ))}
-          </div>
-        ) : <NoDataFound />}
-      </div>}
+      {loading ? (
+        <Loader />
+      ) : (
+        <div className="flex w-full justify-center">
+          {photos.length > 0 ? (
+            <div className="grid w-full gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 justify-center">
+              {photos.map((photo, index) => (
+                <PhotoCard key={index} text={photo.title} image={photo.url} />
+              ))}
+            </div>
+          ) : (
+            <NoDataFound />
+          )}
+        </div>
+      )}
     </div>
   );
 };
