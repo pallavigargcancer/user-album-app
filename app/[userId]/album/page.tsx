@@ -18,14 +18,10 @@ const Album = ({ params }: AlbumProps) => {
 
   const fetchAlbums = async () => {
     setLoading(true);
-    try {
       const data = await getAlbumsForId(params.userId || "");
       if (!data.error) {
         setAlbums(data.result);
       }
-    } catch (error) {
-      console.error("Error fetching albums:", error);
-    }
     setLoading(false);
   };
 
