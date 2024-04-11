@@ -17,14 +17,10 @@ const User = () => {
 
   const fetchUsers = async () => {
     setLoading(true);
-    try {
       const data = await getUsers();
       if (!data.error) {
         setUsers(data.result);
       }
-    } catch (error) {
-      console.error("Error fetching users:", error);
-    }
     setLoading(false);
   };
 
