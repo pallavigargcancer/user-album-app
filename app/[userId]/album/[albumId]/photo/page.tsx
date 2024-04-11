@@ -18,14 +18,10 @@ const Photo = ({ params }: PhotoProps) => {
 
   const fetchPhotos = async () => {
     setLoading(true);
-    try {
       const data = await getPhotosForId(params.albumId || "");
       if (!data.error) {
         setPhotos(data.result);
       }
-    } catch (error) {
-      console.error("Error fetching photos:", error);
-    }
     setLoading(false);
   };
 
